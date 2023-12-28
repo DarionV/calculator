@@ -3,6 +3,7 @@
     margin: 0;
     padding: 0;
 }
+
 .container{
     display: flex;
     flex-direction: column;
@@ -16,6 +17,7 @@
     width: 360px;
     height: 680px;
     margin: auto;
+    margin-top: 20px;
 }
 .container.lcd{
     position: absolute;
@@ -24,33 +26,63 @@
     font-size: 42px;
     width: 220px;
     height: 100px;
-    border: 1px solid red;
+    /* border: 1px solid red; */
 }
 .container.numpad{
-    flex-direction: row;
-    width: 275px;
-    height: 250px;
+    flex-direction: column;
+    width: 306px;
+    height: 380px;
     /* border: solid 2px blue; */
     position: absolute;
-    top: 370px;
-    justify-content: space-around;
+    top: 305px;
+    justify-content: start;
+    padding: 0px 5px;
 }
 .container.column{
     /* border: solid 2px green; */
     height: 100%;
     width: 100%;
     justify-content: start;
+    flex-direction: column;
+    margin-top: 6px;
+}
+.container.row{
+    flex-direction: row;
+    width: 100%;
+    margin-top: 1px;
+    /* border: 2px solid rgb(251, 0, 255); */
 }
 .digit{
-    /* border: solid 2px red; */
+    /* border: solid 1px red; */
     font-size: 24px;
     height: 62px;
     width: 62px;
     background-image: url(images/button.png);
     background-size: cover;
+    cursor: pointer;
+    margin-bottom: 2px;
 }
 .digit.long{
     background-image: url(images/button_long.png);
-    background-size: cover;
-    height: 124px;
+    background-size:cover;
+    background-repeat: no-repeat;
+    background-position:bottom;
+    height: 126px;
+    /* border: solid 1px red; */
+}
+.digit.long-horizontal{
+    background-image: url(images/button_long_horizontal.png);
+    background-size:cover;
+    background-repeat: no-repeat;
+    width: 126px;
+    /* border: solid 1px red; */
+}
+#clear-button{
+    translate: -10px 0px;
+}
+#delete-button{
+    translate: 6px 0px;
+}
+#divide-button{
+    translate: 17px 0px;
 }
