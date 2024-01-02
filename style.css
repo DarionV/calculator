@@ -3,6 +3,10 @@
     margin: 0;
     padding: 0;
 }
+@font-face {
+    font-family: "digital";
+    src: url('digital.otf');
+  }
 
 .container{
     display: flex;
@@ -21,11 +25,17 @@
 }
 .container.lcd{
     position: absolute;
+    flex-direction: row;
     z-index: 100;
     translate: 0px -160px;
-    font-size: 42px;
+    font-family: 'digital', serif;
+    font-size: 55px;
+    justify-content: flex-end;
     width: 220px;
     height: 100px;
+    color: rgb(37, 37, 37);
+    transition-property: all;
+    transition-duration: 5s;
     /* border: 1px solid red; */
 }
 .container.numpad{
@@ -37,6 +47,9 @@
     top: 305px;
     justify-content: start;
     padding: 0px 5px;
+}
+.flash{
+    animation: flash 0.4s normal;
 }
 .container.column{
     /* border: solid 2px green; */
@@ -50,17 +63,18 @@
     flex-direction: row;
     width: 100%;
     margin-top: 1px;
+    justify-content: space-around;
     /* border: 2px solid rgb(251, 0, 255); */
 }
 .digit{
     /* border: solid 1px red; */
     font-size: 24px;
-    height: 62px;
-    width: 62px;
+    height: 64px;
+    width: 64px;
     background-image: url(images/button.png);
     background-size: cover;
     cursor: pointer;
-    margin-bottom: 2px;
+    margin-bottom: -0.5px;
 }
 .digit.long{
     background-image: url(images/button_long.png);
@@ -74,10 +88,21 @@
     background-image: url(images/button_long_horizontal.png);
     background-size:cover;
     background-repeat: no-repeat;
-    width: 126px;
+    background-position: center;
+    width: 136px;
+    height: 62px;
     /* border: solid 1px red; */
 }
-#clear-button{
+.rot-2{
+    rotate: 2deg;
+}
+.rot-1{
+    rotate: -1deg;
+}
+.shift-1{
+    translate: 0px 1px;
+}
+/* #clear-button{
     translate: -10px 0px;
 }
 #delete-button{
@@ -85,4 +110,13 @@
 }
 #divide-button{
     translate: 17px 0px;
+} */
+
+@keyframes flash {
+   0% {
+    opacity: 0%;
+   }
+   100% {
+    opacity: 100%;
+   }
 }
