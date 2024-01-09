@@ -20,7 +20,7 @@ const buttonSubtract = document.querySelector('#button-subtract');
 const buttonMultiply = document.querySelector('#button-multiply');
 const buttonDivide = document.querySelector('#button-divide');
 
-const MAX_CHARACTER_LENGTH = 9;
+const MAX_CHARACTER_LENGTH = 8;
 
 let selectedOperator = 'add';
 let firstOperand = 0;
@@ -132,9 +132,9 @@ buttonEquals.addEventListener('click', ()=>{
 });
  
 function add(){
-    let a = Number(firstOperand);
-    let b = Number(secondOperand);
-    result = a + b;
+    let a = Number(firstOperand) * 100000000;
+    let b = Number(secondOperand) * 100000000;
+    result = (a + b) / 100000000;
     setResult();
     return result;
 }
@@ -226,7 +226,9 @@ function renderInput(input){
 
 function renderResult(){
     flashLCD();
-    lcdText.textContent = result;
+    const resultString = result.toString();
+    if(resultString.length <= MAX_CHARACTER_LENGTH) lcdText.textContent = result;
+    else lcdText.textContent = result.toExponential(2);
 }
 
 
