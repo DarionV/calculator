@@ -9,6 +9,7 @@ const buttonSix = document.querySelector('#button-six');
 const buttonSeven = document.querySelector('#button-seven');
 const buttonEight = document.querySelector('#button-eight');
 const buttonNine = document.querySelector('#button-nine');
+const buttonDecimal = document.querySelector('#button-decimal');
 
 const buttonClear = document.querySelector('#button-clear');
 const buttonEquals = document.querySelector('#button-equals');
@@ -18,105 +19,221 @@ const buttonSubtract = document.querySelector('#button-subtract');
 const buttonMultiply = document.querySelector('#button-multiply');
 const buttonDivide = document.querySelector('#button-divide');
 
-const MAX_CHARACTER = 9;
+const MAX_CHARACTER_LENGTH = 9;
 
-lcdText.textContent = '';
-
-let selectedOperator = '';
-let storedNumber = '';
+let selectedOperator = 'add';
+let firstOperand = 0;
+let secondOperand = 0;
+let result = 0;
 
 let newLine = false;
+let isDecimalAdded = false;
+let isFirstOperandSet = false;
+let isResultEvaluated = false;
+let isCalculating = false;
 
+buttonDecimal.addEventListener('click',()=>{
+    if(!isDecimalAdded) renderInput('.');
+    isDecimalAdded = true;
+});
 buttonZero.addEventListener('click',()=>{
-    renderInput('0');
+    if(lcdText.textContent !== '0'){ 
+        renderInput('0');
+        updateOperand();
+    }
 });
 buttonOne.addEventListener('click',()=>{
     renderInput('1');
+    updateOperand();
 });
 buttonTwo.addEventListener('click',()=>{
     renderInput('2');
+    updateOperand();
 });
 buttonThree.addEventListener('click',()=>{
     renderInput('3');
+    updateOperand();
 });
 buttonFour.addEventListener('click',()=>{
     renderInput('4');
+    updateOperand();
 });
 buttonFive.addEventListener('click',()=>{
     renderInput('5');
+    updateOperand();
 });
 buttonSix.addEventListener('click',()=>{
     renderInput('6');
+    updateOperand();
 });
 buttonSeven.addEventListener('click',()=>{
     renderInput('7');
+    updateOperand();
 });
 buttonEight.addEventListener('click',()=>{
     renderInput('8');
+    updateOperand();
 });
 buttonNine.addEventListener('click',()=>{
     renderInput('9');
+    updateOperand();
 });
+
+
+
 buttonClear.addEventListener('click', ()=>{
-    clearInput();
-    resetStoredNumber();
+    zeroInput();
+    resetMemory();
 });
+
 
 buttonAdd.addEventListener('click', ()=>{
-    selectOperator('add');
+    if(!isCalculating) toggleOperands();
+    operate();
+    setOperator('add');
+    isResultEvaluated  = true;
+    isCalculating = true;
 });
 buttonSubtract.addEventListener('click', ()=>{
-    selectOperator('subtract');
+    if(!isCalculating) toggleOperands();
+    operate();
+    setOperator('subtract');
+    isResultEvaluated  = true;
+    isCalculating = true;
 });
 buttonMultiply.addEventListener('click', ()=>{
-    selectOperator('multiply');
+    if(!isCalculating) toggleOperands();
+    operate();
+    setOperator('multiply');
+    isResultEvaluated  = true;
+    isCalculating = true;
 });
 buttonDivide.addEventListener('click', ()=>{
-    selectOperator('divide');
+    if(!isCalculating) toggleOperands();
+    operate();
+    setOperator('divide');
+    isResultEvaluated  = true;
+    isCalculating = true;
 });
 buttonEquals.addEventListener('click', ()=>{
-    renderResult(add(lcdText.textContent));
+    operate();
+    renderResult();
+    isResultEvaluated = true;
+    firstOperand = result;
+    secondOperand = 0;
 });
-
-
-
-function add(input){
-    let a = +storedNumber;
-    let b = +input;
-    return (a + b);
+ 
+function add(){
+    let a = Number(firstOperand);
+    let b = Number(secondOperand);
+    result = a + b;
+    setResult();
+    return result;
 }
 
-function subtract(a, b){
-    return a - b ;
+function subtract(){
+    let a = Number(firstOperand);
+    let b = Number(secondOperand);
+    result = a - b;
+    setResult();
+    return result;
 }
 
-function multiply(a, b){
-    return a * b;
+function multiply(){
+    let a = Number(firstOperand);
+    let b = Number(secondOperand);
+    result = a * b;
+    setResult();
+    return result;
 }
 
-function divide(a, b){
-    if(b == 0) return 'Ribbit!';
-    return a / b;
+function divide(){
+    let a = Number(firstOperand);
+    let b = Number(secondOperand);
+    if(b === 0) result = 'ribbiT';
+    else result = a / b;
+    setResult();
+    return result;
 }
+
+function setOperator(operator){
+    flashLCD();
+    selectedOperator = operator;
+    newLine = true;
+    isDecimalAdded = false;
+}
+
+function setFirstOperand(value = lcdText.textContent){
+    firstOperand = value;
+}
+
+function setSecondOperand(value = lcdText.textContent){
+    secondOperand = value;
+}
+
+function updateOperand(){
+    isFirstOperandSet ? setSecondOperand() : setFirstOperand();
+}
+
+function toggleOperands(){
+    isFirstOperandSet ? isFirstOperandSet = false : isFirstOperandSet = true;
+}
+
+function setResult(){
+    firstOperand = result;
+}
+
+function operate(){
+    if(isResultEvaluated) return;
+    
+    switch(selectedOperator){
+        case 'add': add();
+        break;
+        case 'subtract': subtract();
+        break;
+        case 'multiply': multiply();
+        break;
+        case 'divide': divide();
+        break;
+        default:
+            console.log('Nothing to evaluate');
+    }
+}
+
+
+
 
 function renderInput(input){
     flashLCD();
-    if(newLine) clearInput();
-    if(lcdText.textContent.length < MAX_CHARACTER )lcdText.textContent += input;
+    if(newLine || lcdText.textContent == '0') clearInput();
+    if(lcdText.textContent.length < MAX_CHARACTER_LENGTH ) lcdText.textContent += input;
     newLine = false;
+    isResultEvaluated = false;
 }
 
-function renderResult(result){
+function renderResult(){
     flashLCD();
     lcdText.textContent = result;
 }
+
+
+
 
 function clearInput(){
     lcdText.textContent = '';
 }
 
-function resetStoredNumber(){
-    storedNumber = 0;
+function zeroInput(){
+    lcdText.textContent = '0';
+}
+
+function resetMemory(){
+    secondOperand = 0;
+    firstOperand = 0;
+    isFirstOperandSet = false;
+    isCalculating = false;
+    result = 0;
+    setOperator('add');
 }
 
 function flashLCD(){
@@ -126,13 +243,4 @@ function flashLCD(){
     },400);
 }
 
-function selectOperator(operator){
-    selectedOperator = operator;
-    flashLCD();
-    newLine = true;
-    storedNumber = lcdText.textContent;
-}
-
-function equals(){
-
-}
+zeroInput();
