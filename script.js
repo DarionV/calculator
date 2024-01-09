@@ -31,6 +31,10 @@ let isDecimalAdded = false;
 let isFirstOperandSet = false;
 let isResultEvaluated = false;
 let isCalculating = false;
+let dividedByZero = false;
+
+//used in case the user keeps pressing the = button. 
+let isIterating = false;
 
 buttonDecimal.addEventListener('click',()=>{
     if(!isDecimalAdded) renderInput('.');
@@ -118,9 +122,10 @@ buttonDivide.addEventListener('click', ()=>{
 buttonEquals.addEventListener('click', ()=>{
     operate();
     renderResult();
-    isResultEvaluated = true;
+    // isResultEvaluated = true;
     firstOperand = result;
-    secondOperand = 0;
+    if(!isIterating) secondOperand = 0;
+    isIterating = true;
 });
  
 function add(){
@@ -150,8 +155,12 @@ function multiply(){
 function divide(){
     let a = Number(firstOperand);
     let b = Number(secondOperand);
-    if(b === 0) result = 'ribbiT';
-    else result = a / b;
+    if(b === 0) {
+        result = 'ribbiT';
+        dividedByZero = true;
+    } else {
+        result = a / b;
+    }
     setResult();
     return result;
 }
@@ -205,8 +214,9 @@ function operate(){
 
 function renderInput(input){
     flashLCD();
-    if(newLine || lcdText.textContent == '0') clearInput();
+    if(newLine || lcdText.textContent == '0' || dividedByZero) clearInput();
     if(lcdText.textContent.length < MAX_CHARACTER_LENGTH ) lcdText.textContent += input;
+    if(dividedByZero) resetMemory();
     newLine = false;
     isResultEvaluated = false;
 }
@@ -232,6 +242,7 @@ function resetMemory(){
     firstOperand = 0;
     isFirstOperandSet = false;
     isCalculating = false;
+    dividedByZero = false;
     result = 0;
     setOperator('add');
 }
