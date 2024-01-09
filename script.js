@@ -13,6 +13,7 @@ const buttonDecimal = document.querySelector('#button-decimal');
 
 const buttonClear = document.querySelector('#button-clear');
 const buttonEquals = document.querySelector('#button-equals');
+const buttonDelete = document.querySelector('#button-delete');
 
 const buttonAdd = document.querySelector('#button-add');
 const buttonSubtract = document.querySelector('#button-subtract');
@@ -89,6 +90,8 @@ buttonClear.addEventListener('click', ()=>{
     zeroInput();
     resetMemory();
 });
+
+buttonDelete.addEventListener('click', backspace);
 
 
 buttonAdd.addEventListener('click', ()=>{
@@ -227,7 +230,14 @@ function renderResult(){
 }
 
 
-
+function backspace(){
+    let inputArray = Array.from(lcdText.textContent);
+    inputArray.pop();
+    let string = inputArray.join('');
+    clearInput();
+    renderInput(string);
+    updateOperand();
+}
 
 function clearInput(){
     lcdText.textContent = '';
