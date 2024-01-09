@@ -21,22 +21,22 @@ const buttonMultiply = document.querySelector('#button-multiply');
 const buttonDivide = document.querySelector('#button-divide');
 
 const MAX_CHARACTER_LENGTH = 8;
+const MULTIPLE = 100000000;
 
-let selectedOperator = 'add';
 let firstOperand = 0;
 let secondOperand = 0;
 let result = 0;
+let selectedOperator = 'add';
 
 let newLine = false;
 let isDecimalAdded = false;
 let isFirstOperandSet = false;
-let isResultEvaluated = false;
-let isCalculating = false;
 let dividedByZero = false;
-
+let hasEvaluatedResult = false;
 //used in case the user keeps pressing the = button. 
 let isIterating = false;
 
+//-----NUMERICAL BUTTONS------------------//
 buttonDecimal.addEventListener('click',()=>{
     if(!isDecimalAdded) renderInput('.');
     isDecimalAdded = true;
@@ -44,160 +44,92 @@ buttonDecimal.addEventListener('click',()=>{
 buttonZero.addEventListener('click',()=>{
     if(lcdText.textContent !== '0'){ 
         renderInput('0');
-        updateOperand();
+        setSecondOperand();
     }
 });
 buttonOne.addEventListener('click',()=>{
     renderInput('1');
-    updateOperand();
+    setSecondOperand();
 });
 buttonTwo.addEventListener('click',()=>{
     renderInput('2');
-    updateOperand();
+    setSecondOperand();
 });
 buttonThree.addEventListener('click',()=>{
     renderInput('3');
-    updateOperand();
+    setSecondOperand();
 });
 buttonFour.addEventListener('click',()=>{
     renderInput('4');
-    updateOperand();
+    setSecondOperand();
 });
 buttonFive.addEventListener('click',()=>{
     renderInput('5');
-    updateOperand();
+    setSecondOperand();
 });
 buttonSix.addEventListener('click',()=>{
     renderInput('6');
-    updateOperand();
+    setSecondOperand();
 });
 buttonSeven.addEventListener('click',()=>{
     renderInput('7');
-    updateOperand();
+    setSecondOperand();
 });
 buttonEight.addEventListener('click',()=>{
     renderInput('8');
-    updateOperand();
+    setSecondOperand();
 });
 buttonNine.addEventListener('click',()=>{
     renderInput('9');
-    updateOperand();
+    setSecondOperand();
 });
 
-
-
+//-----DELETE BUTTONS--------------------//
 buttonClear.addEventListener('click', ()=>{
     zeroInput();
     resetMemory();
 });
-
 buttonDelete.addEventListener('click', backspace);
 
-
+//-----OPERATOR BUTTONS------------------//
 buttonAdd.addEventListener('click', ()=>{
-    if(!isCalculating) toggleOperands();
-    operate();
+    if(!hasEvaluatedResult) operate();
+    hasEvaluatedResult = false;
+    
+    setSecondOperand('0');
     setOperator('add');
-    isResultEvaluated  = true;
-    isCalculating = true;
 });
 buttonSubtract.addEventListener('click', ()=>{
-    if(!isCalculating) toggleOperands();
-    operate();
+    if(!hasEvaluatedResult) operate();
+    hasEvaluatedResult = false;
+
+    setSecondOperand('0');
     setOperator('subtract');
-    isResultEvaluated  = true;
-    isCalculating = true;
 });
 buttonMultiply.addEventListener('click', ()=>{
-    if(!isCalculating) toggleOperands();
-    operate();
+    if(!hasEvaluatedResult) operate();
+    hasEvaluatedResult = false;
+
+    setSecondOperand('0');
     setOperator('multiply');
-    isResultEvaluated  = true;
-    isCalculating = true;
 });
 buttonDivide.addEventListener('click', ()=>{
-    if(!isCalculating) toggleOperands();
-    operate();
+    if(!hasEvaluatedResult) operate();
+    hasEvaluatedResult = false;
+
+    setSecondOperand('0');
     setOperator('divide');
-    isResultEvaluated  = true;
-    isCalculating = true;
 });
 buttonEquals.addEventListener('click', ()=>{
     operate();
     renderResult();
-    // isResultEvaluated = true;
-    firstOperand = result;
-    if(!isIterating) secondOperand = 0;
+    hasEvaluatedResult = true;
     isIterating = true;
 });
- 
-function add(){
-    let a = Number(firstOperand) * 100000000;
-    let b = Number(secondOperand) * 100000000;
-    result = (a + b) / 100000000;
-    setResult();
-    return result;
-}
 
-function subtract(){
-    let a = Number(firstOperand);
-    let b = Number(secondOperand);
-    result = a - b;
-    setResult();
-    return result;
-}
-
-function multiply(){
-    let a = Number(firstOperand);
-    let b = Number(secondOperand);
-    result = a * b;
-    setResult();
-    return result;
-}
-
-function divide(){
-    let a = Number(firstOperand);
-    let b = Number(secondOperand);
-    if(b === 0) {
-        result = 'ribbiT';
-        dividedByZero = true;
-    } else {
-        result = a / b;
-    }
-    setResult();
-    return result;
-}
-
-function setOperator(operator){
-    flashLCD();
-    selectedOperator = operator;
-    newLine = true;
-    isDecimalAdded = false;
-}
-
-function setFirstOperand(value = lcdText.textContent){
-    firstOperand = value;
-}
-
-function setSecondOperand(value = lcdText.textContent){
-    secondOperand = value;
-}
-
-function updateOperand(){
-    isFirstOperandSet ? setSecondOperand() : setFirstOperand();
-}
-
-function toggleOperands(){
-    isFirstOperandSet ? isFirstOperandSet = false : isFirstOperandSet = true;
-}
-
-function setResult(){
-    firstOperand = result;
-}
-
+//-------FUNCTIONS-----------------------//
 function operate(){
-    if(isResultEvaluated) return;
-    
+
     switch(selectedOperator){
         case 'add': add();
         break;
@@ -210,10 +142,68 @@ function operate(){
         default:
             console.log('Nothing to evaluate');
     }
+    flashLCD();
+    newLine = true;
+    isDecimalAdded = false;
+    firstOperand = result;
 }
 
+function add(){
+    let a = Number(firstOperand) * MULTIPLE;
+    let b = Number(secondOperand) * MULTIPLE;
+    result = (a + b) / MULTIPLE;
+    setFirstOperand(result);
+    return result;
+}
 
+function subtract(){
+    let a = Number(firstOperand) * MULTIPLE;
+    let b = Number(secondOperand) * MULTIPLE;
+    result = (a - b) / MULTIPLE;
+    setFirstOperand(result);
+    return result;
+}
 
+function multiply(){
+    let a = Number(firstOperand) * MULTIPLE;
+    let b = Number(secondOperand) * MULTIPLE;
+    result = ((a * b) / MULTIPLE) / MULTIPLE;
+    setFirstOperand(result);
+    console.log(result);
+    return result;
+}
+
+function divide(){
+    let a = Number(firstOperand) * MULTIPLE;
+    let b = Number(secondOperand) * MULTIPLE;
+
+    if(b === 0) divideByZero();
+
+    result = (a / b) / MULTIPLE;
+    setFirstOperand(result);
+    return result;
+}
+
+function divideByZero(){
+    result = 'RIBBIT!';
+    dividedByZero = true;
+}
+
+function setFirstOperand(value = lcdText.textContent){
+    firstOperand = value;
+}
+
+function setSecondOperand(value = lcdText.textContent){
+    secondOperand = value;
+}
+
+function setOperator(operator){
+    selectedOperator = operator;
+}
+
+function toggleOperands(){
+    isFirstOperandSet ? isFirstOperandSet = false : isFirstOperandSet = true;
+}
 
 function renderInput(input){
     flashLCD();
@@ -221,7 +211,7 @@ function renderInput(input){
     if(lcdText.textContent.length < MAX_CHARACTER_LENGTH ) lcdText.textContent += input;
     if(dividedByZero) resetMemory();
     newLine = false;
-    isResultEvaluated = false;
+   
 }
 
 function renderResult(){
@@ -230,7 +220,6 @@ function renderResult(){
     if(resultString.length <= MAX_CHARACTER_LENGTH) lcdText.textContent = result;
     else lcdText.textContent = result.toExponential(2);
 }
-
 
 function backspace(){
     let inputArray = Array.from(lcdText.textContent);
@@ -249,14 +238,19 @@ function zeroInput(){
     lcdText.textContent = '0';
 }
 
+// function welcome(){
+//     lcdText.textContent = 'welcome!';
+//     newLine = true;
+// }
+
 function resetMemory(){
     secondOperand = 0;
     firstOperand = 0;
     isFirstOperandSet = false;
-    isCalculating = false;
     dividedByZero = false;
     result = 0;
-    setOperator('add');
+    selectedOperator = 'add';
+    hasEvaluatedResult = false;
 }
 
 function flashLCD(){
