@@ -47,6 +47,8 @@
     top: 305px;
     justify-content: start;
     padding: 0px 5px;
+    font-family: 'Lemonada', cursive;
+    color:rgba(0, 0, 0, 0.601);
 }
 .flash{
     animation: flash 0.4s normal;
@@ -101,6 +103,9 @@
 }
 .shift-1{
     translate: 0px 1px;
+}
+.scale-1{
+    scale: 98%;;
 }
 /* #clear-button{
     translate: -10px 0px;
