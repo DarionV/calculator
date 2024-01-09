@@ -6,6 +6,9 @@
     <title>Calculator</title>
     <script src="script.js" defer></script>
     <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lemonada:wght@600&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container calculator">
@@ -15,18 +18,18 @@
             <div class="container row">
                 <div class="container digit long-horizontal" id="button-clear">CLEAR</div>
                 <div class="container digit" id="button-delete">◄</div>
-                <div class="container digit shift-1" id="button-divide">÷</div>
+                <div class="container digit shift-1 scale-1" id="button-divide">÷</div>
             </div>
             <div class="container row">
                 <div class="container column">
                     <div class="container digit rot-2" id="button-seven">7</div>
                     <div class="container digit shift-1" id="button-four">4</div>
-                    <div class="container digit rot-1" id="button-one">1</div>
+                    <div class="container digit rot-1 scale-1" id="button-one">1</div>
                     <div class="container digit shift-1" id="button-zero">0</div>
                 </div>
 
                 <div class="container column">
-                    <div class="container digit" id="button-eight">8</div>
+                    <div class="container digit scale-1" id="button-eight">8</div>
                     <div class="container digit rot-2" id="button-five">5</div>
                     <div class="container digit rot-1" id="button-two">2</div>
                     <div class="container digit" id="button-decimal">.</div>
@@ -34,7 +37,7 @@
 
                 <div class="container column">
                     <div class="container digit rot-2" id="button-nine">9</div>
-                    <div class="container digit" id="button-six">6</div>
+                    <div class="container digit scale-1" id="button-six">6</div>
                     <div class="container digit" id="button-three">3</div>
                     <div class="container digit rot-2" id="button-equals">=</div>
                 </div>
