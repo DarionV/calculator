@@ -123,6 +123,9 @@ body{
     height: 62px;
     /* border: solid 1px red; */
 }
+.operator{
+    filter: hue-rotate(310deg);
+}
 .rot-2{
     rotate: 2deg;
 }
