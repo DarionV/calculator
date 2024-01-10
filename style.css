@@ -3,6 +3,7 @@
     margin: 0;
     padding: 0;
     user-select: none;
+    -webkit-tap-highlight-color: transparent
 }
 @font-face {
     font-family: "digital";
@@ -98,6 +99,12 @@ body{
     background-size: cover;
     cursor: pointer;
     margin-bottom: -0.5px;
+}
+.digit:active{
+    scale: 95%;
+}
+.digit:hover{
+    rotate: 1deg;
 }
 .digit.long{
     background-image: url(images/button_long.png);
