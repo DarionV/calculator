@@ -176,7 +176,10 @@ function divide(){
     let a = Number(firstOperand) * MULTIPLE;
     let b = Number(secondOperand) * MULTIPLE;
 
-    if(b === 0) divideByZero();
+    if(b === 0) {
+        divideByZero();
+        return;
+    }
 
     result = (a / b) / MULTIPLE;
     setFirstOperand(result);
