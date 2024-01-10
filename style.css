@@ -9,12 +9,28 @@
     src: url('digital.ttf');
   }
 
+body{
+    background: linear-gradient(rgba(250, 242, 255, 0.534) 0%, rgba(226, 247, 254, 0.438) 100%);
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
 .container{
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     /* border: 1px solid red; */
+}
+.footer.container{
+    margin-top: auto;
+    height: 48px;
+    flex-direction: row;
+    gap: 6px;
+    font-family: 'Raleway', sans-serif;
+    font-size: 14px;
 }
 .container.calculator{
     position: relative;
@@ -107,6 +123,16 @@
 }
 .scale-1{
     scale: 98%;;
+}
+.invert{
+    filter: invert();
+}
+a{
+    text-decoration: none;
+    color: black;
+}
+a:hover{
+    color: rgb(183, 47, 113);
 }
 /* #clear-button{
     translate: -10px 0px;
