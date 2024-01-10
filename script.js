@@ -30,11 +30,12 @@ let selectedOperator = 'add';
 
 let newLine = false;
 let isDecimalAdded = false;
-let isFirstOperandSet = false;
 let dividedByZero = false;
+
+//used in case the user keeps pressing the = button and then presses an operator button.
+//when pressing an operator button, operate() is called.
+//We don't want to call operate() if the result has already been evaluated with = button.
 let hasEvaluatedResult = false;
-//used in case the user keeps pressing the = button. 
-let isIterating = false;
 
 //-----NUMERICAL BUTTONS------------------//
 buttonDecimal.addEventListener('click',()=>{
@@ -124,12 +125,10 @@ buttonEquals.addEventListener('click', ()=>{
     operate();
     renderResult();
     hasEvaluatedResult = true;
-    isIterating = true;
 });
 
 //-------FUNCTIONS-----------------------//
 function operate(){
-
     switch(selectedOperator){
         case 'add': add();
         break;
@@ -143,9 +142,9 @@ function operate(){
             console.log('Nothing to evaluate');
     }
     flashLCD();
+    setFirstOperand(result);
     newLine = true;
     isDecimalAdded = false;
-    firstOperand = result;
 }
 
 function add(){
@@ -201,10 +200,6 @@ function setOperator(operator){
     selectedOperator = operator;
 }
 
-function toggleOperands(){
-    isFirstOperandSet ? isFirstOperandSet = false : isFirstOperandSet = true;
-}
-
 function renderInput(input){
     flashLCD();
     if(newLine || lcdText.textContent == '0' || dividedByZero) clearInput();
@@ -238,19 +233,18 @@ function zeroInput(){
     lcdText.textContent = '0';
 }
 
-// function welcome(){
-//     lcdText.textContent = 'welcome!';
-//     newLine = true;
-// }
+function welcome(){
+    lcdText.textContent = 'welcome!';
+    newLine = true;
+}
 
 function resetMemory(){
-    secondOperand = 0;
     firstOperand = 0;
-    isFirstOperandSet = false;
-    dividedByZero = false;
+    secondOperand = 0;
     result = 0;
-    selectedOperator = 'add';
+    dividedByZero = false;
     hasEvaluatedResult = false;
+    selectedOperator = 'add';
 }
 
 function flashLCD(){
@@ -260,4 +254,4 @@ function flashLCD(){
     },400);
 }
 
-zeroInput();
+welcome();
