@@ -70,6 +70,10 @@ body{
 .flash{
     animation: flash 0.4s normal;
 }
+.shake{
+    animation: shake 0.2s normal ease;
+    animation-iteration-count: 2;
+}
 .container.column{
     /* border: solid 2px green; */
     height: 100%;
@@ -151,4 +155,19 @@ a:hover{
    100% {
     opacity: 100%;
    }
+}
+
+@keyframes shake {
+    0% {
+        rotate: 0deg;
+    }
+    25% {
+        rotate: 1deg;
+    }
+    75% {
+        rotate: -2deg;
+    }
+    100%{
+        rotate: 0deg;
+    }
 }

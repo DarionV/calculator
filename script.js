@@ -20,6 +20,8 @@ const buttonSubtract = document.querySelector('#button-subtract');
 const buttonMultiply = document.querySelector('#button-multiply');
 const buttonDivide = document.querySelector('#button-divide');
 
+const calculatorFrame = document.querySelector('#calculator-frame');
+
 const MAX_CHARACTER_LENGTH = 8;
 const MULTIPLE = 100000000;
 
@@ -189,6 +191,7 @@ function divide(){
 function divideByZero(){
     result = 'RIBBIT!';
     dividedByZero = true;
+    shake();
 }
 
 function setFirstOperand(value = lcdText.textContent){
@@ -255,6 +258,13 @@ function flashLCD(){
     setTimeout(()=>{
         lcdText.classList.remove('flash');
     },400);
+}
+
+function shake(){
+    calculatorFrame.classList.add('shake');
+    setTimeout(()=>{
+        calculatorFrame.classList.remove('shake');
+    }, 5000);
 }
 
 welcome();
