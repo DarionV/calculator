@@ -216,7 +216,6 @@ function renderInput(input){
     if(lcdText.textContent.length < MAX_CHARACTER_LENGTH ) lcdText.textContent += input;
     if(dividedByZero) resetMemory();
     newLine = false;
-   
 }
 
 function renderResult(){
@@ -261,6 +260,7 @@ function resetMemory(){
     dividedByZero = false;
     hasEvaluatedResult = false;
     selectedOperator = 'add';
+    isDecimalAdded = false;
 }
 
 function flashLCD(){
