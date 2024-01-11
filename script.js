@@ -95,7 +95,7 @@ document.addEventListener('keydown',(e)=>{
     if(e.key === '+') pressOperatorButton('add');
     if(e.key === '-') pressOperatorButton('subtract');
     if(e.key === '*') pressOperatorButton('multiply');
-    if(e.key === '/') pressOperatorButton('divide');
+    if(e.key === '/') { pressOperatorButton('divide'); e.preventDefault();}
     if(e.key === 'Backspace') backspace();
     if(e.key === 'Enter' || e.key === '=') {
         operate();
