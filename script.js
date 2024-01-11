@@ -87,6 +87,23 @@ buttonNine.addEventListener('click',()=>{
     setSecondOperand();
 });
 
+document.addEventListener('keydown',(e)=>{
+    if (!isNaN(Number(e.key))) {
+        renderInput(e.key);
+        setSecondOperand();
+    }
+    if(e.key === '+') pressOperatorButton('add');
+    if(e.key === '-') pressOperatorButton('subtract');
+    if(e.key === '*') pressOperatorButton('multiply');
+    if(e.key === '/') pressOperatorButton('divide');
+    if(e.key === 'Backspace') backspace();
+    if(e.key === 'Enter' || e.key === '=') {
+        operate();
+        renderResult();
+        hasEvaluatedResult = true;
+    }
+})
+
 //-----DELETE BUTTONS--------------------//
 buttonClear.addEventListener('click', ()=>{
     zeroInput();
@@ -96,32 +113,16 @@ buttonDelete.addEventListener('click', backspace);
 
 //-----OPERATOR BUTTONS------------------//
 buttonAdd.addEventListener('click', ()=>{
-    if(!hasEvaluatedResult) operate();
-    hasEvaluatedResult = false;
-    
-    setSecondOperand('0');
-    setOperator('add');
+    pressOperatorButton('add')
 });
 buttonSubtract.addEventListener('click', ()=>{
-    if(!hasEvaluatedResult) operate();
-    hasEvaluatedResult = false;
-
-    setSecondOperand('0');
-    setOperator('subtract');
+    pressOperatorButton('subtract');
 });
 buttonMultiply.addEventListener('click', ()=>{
-    if(!hasEvaluatedResult) operate();
-    hasEvaluatedResult = false;
-
-    setSecondOperand('0');
-    setOperator('multiply');
+    pressOperatorButton('multiply');
 });
 buttonDivide.addEventListener('click', ()=>{
-    if(!hasEvaluatedResult) operate();
-    hasEvaluatedResult = false;
-
-    setSecondOperand('0');
-    setOperator('divide');
+    pressOperatorButton('divide');
 });
 buttonEquals.addEventListener('click', ()=>{
     operate();
@@ -175,17 +176,25 @@ function multiply(){
 }
 
 function divide(){
-    let a = Number(firstOperand) * MULTIPLE;
-    let b = Number(secondOperand) * MULTIPLE;
+    let a = Number(firstOperand);
+    let b = Number(secondOperand);
 
     if(b === 0) {
         divideByZero();
         return;
     }
 
-    result = (a / b) / MULTIPLE;
+    result = (a / b) 
     setFirstOperand(result);
     return result;
+}
+
+function pressOperatorButton(operator){
+    if(!hasEvaluatedResult) operate();
+    hasEvaluatedResult = false;
+    
+    setSecondOperand('0');
+    setOperator(operator);
 }
 
 function divideByZero(){
@@ -228,7 +237,11 @@ function backspace(){
     let string = inputArray.join('');
     clearInput();
     renderInput(string);
-    updateOperand();
+    if(hasEvaluatedResult){
+        resetMemory();
+        zeroInput();
+    }
+    else setSecondOperand();
 }
 
 function clearInput(){
