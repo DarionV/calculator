@@ -29,6 +29,8 @@ let firstOperand = 0;
 let secondOperand = 0;
 let result = 0;
 let selectedOperator = 'add';
+let a = 0;
+let b = 0;
 
 let newLine = false;
 let isDecimalAdded = false;
@@ -40,15 +42,10 @@ let dividedByZero = false;
 let hasEvaluatedResult = false;
 
 //-----NUMERICAL BUTTONS------------------//
-buttonDecimal.addEventListener('click',()=>{
-    if(!isDecimalAdded) renderInput('.');
-    isDecimalAdded = true;
-});
+buttonDecimal.addEventListener('click', addDecimal);
 buttonZero.addEventListener('click',()=>{
-    if(lcdText.textContent !== '0'){ 
         renderInput('0');
         setSecondOperand();
-    }
 });
 buttonOne.addEventListener('click',()=>{
     renderInput('1');
@@ -95,20 +92,15 @@ document.addEventListener('keydown',(e)=>{
     if(e.key === '+') pressOperatorButton('add');
     if(e.key === '-') pressOperatorButton('subtract');
     if(e.key === '*') pressOperatorButton('multiply');
+    if(e.key === '.') addDecimal();
     if(e.key === '/') { pressOperatorButton('divide'); e.preventDefault();}
     if(e.key === 'Backspace') backspace();
-    if(e.key === 'Enter' || e.key === '=') {
-        operate();
-        renderResult();
-        hasEvaluatedResult = true;
-    }
+    if(e.key === 'Escape') reset();
+    if(e.key === 'Enter' || e.key === '=') pressEqualButton();
 })
 
 //-----DELETE BUTTONS--------------------//
-buttonClear.addEventListener('click', ()=>{
-    zeroInput();
-    resetMemory();
-});
+buttonClear.addEventListener('click', reset);
 buttonDelete.addEventListener('click', backspace);
 
 //-----OPERATOR BUTTONS------------------//
@@ -124,11 +116,7 @@ buttonMultiply.addEventListener('click', ()=>{
 buttonDivide.addEventListener('click', ()=>{
     pressOperatorButton('divide');
 });
-buttonEquals.addEventListener('click', ()=>{
-    operate();
-    renderResult();
-    hasEvaluatedResult = true;
-});
+buttonEquals.addEventListener('click', pressEqualButton);
 
 //-------FUNCTIONS-----------------------//
 function operate(){
@@ -151,42 +139,34 @@ function operate(){
 }
 
 function add(){
-    let a = Number(firstOperand) * MULTIPLE;
-    let b = Number(secondOperand) * MULTIPLE;
+    getOperands();
     result = (a + b) / MULTIPLE;
     setFirstOperand(result);
     return result;
 }
 
 function subtract(){
-    let a = Number(firstOperand) * MULTIPLE;
-    let b = Number(secondOperand) * MULTIPLE;
+    getOperands();
     result = (a - b) / MULTIPLE;
     setFirstOperand(result);
     return result;
 }
 
 function multiply(){
-    let a = Number(firstOperand) * MULTIPLE;
-    let b = Number(secondOperand) * MULTIPLE;
+    getOperands();
     result = ((a * b) / MULTIPLE) / MULTIPLE;
     setFirstOperand(result);
-    console.log(result);
     return result;
 }
 
 function divide(){
-    let a = Number(firstOperand);
-    let b = Number(secondOperand);
-
-    if(b === 0) {
-        divideByZero();
-        return;
+    getOperands();
+    if(b === 0) divideByZero();
+    else{
+        result = (a / b) 
+        setFirstOperand(result);
+        return result;
     }
-
-    result = (a / b) 
-    setFirstOperand(result);
-    return result;
 }
 
 function pressOperatorButton(operator){
@@ -215,6 +195,21 @@ function setOperator(operator){
     selectedOperator = operator;
 }
 
+function getOperands(){
+    a = Number(firstOperand) * MULTIPLE;
+    b = Number(secondOperand) * MULTIPLE;
+}
+
+function addDecimal(){
+    if(!isDecimalAdded) renderInput('.');
+    isDecimalAdded = true;
+}
+
+function pressEqualButton(){
+    operate();
+    renderResult();
+    hasEvaluatedResult = true;
+}
 function renderInput(input){
     flashLCD();
     if(newLine || lcdText.textContent == '0' || dividedByZero) clearInput();
@@ -237,11 +232,13 @@ function backspace(){
     let string = inputArray.join('');
     clearInput();
     renderInput(string);
-    if(hasEvaluatedResult){
-        resetMemory();
-        zeroInput();
-    }
+    if(hasEvaluatedResult) reset();
     else setSecondOperand();
+}
+
+function reset(){
+    resetMemory();
+    zeroInput();
 }
 
 function clearInput(){
