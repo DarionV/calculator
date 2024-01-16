@@ -31,11 +31,11 @@ In that regard, the etch-a-sketch project was more useful for learning CSS and h
 
  - **Problem** 
  I had issues keeping track of all the variables and didn't quite know how to store them correctly to have the functionality that I wanted. Many times, I came up with new booleans and variables that were essentially duplicating the purposes of other variables. Which after a while lead to great confusion.
- **Solution** 
+ - **Solution** 
  I deleted a big chunk of the code, along with the variables and made a flow chart on paper, which helped me better understand what variables were needed and when. 
  - **Problem** 
  It was hard to anticipate, and to test for all the different possible combination of keystrokes. If I fixed something, it broke something else. 
- **Solution** 
+ - **Solution** 
  Again, the flow chart helped me structure the code. Having some visual representation of the code was very useful in wrapping my head around the issues I faced.
 
 ## Takeaways
