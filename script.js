@@ -132,7 +132,6 @@ function operate(){
         default:
             console.log('Nothing to evaluate');
     }
-    flashLCD();
     setFirstOperand(result);
     newLine = true;
     isDecimalAdded = false;
@@ -193,6 +192,7 @@ function setSecondOperand(value = lcdText.textContent){
 
 function setOperator(operator){
     selectedOperator = operator;
+    flashLCD();
 }
 
 function getOperands(){
