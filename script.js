@@ -1,26 +1,6 @@
-const lcdText = document.querySelector('#lcd-text');
-const buttonZero = document.querySelector('#button-zero');
-const buttonOne = document.querySelector('#button-one');
-const buttonTwo = document.querySelector('#button-two');
-const buttonThree = document.querySelector('#button-three');
-const buttonFour = document.querySelector('#button-four');
-const buttonFive = document.querySelector('#button-five');
-const buttonSix = document.querySelector('#button-six');
-const buttonSeven = document.querySelector('#button-seven');
-const buttonEight = document.querySelector('#button-eight');
-const buttonNine = document.querySelector('#button-nine');
-const buttonDecimal = document.querySelector('#button-decimal');
-
-const buttonClear = document.querySelector('#button-clear');
-const buttonEquals = document.querySelector('#button-equals');
-const buttonDelete = document.querySelector('#button-delete');
-
-const buttonAdd = document.querySelector('#button-add');
-const buttonSubtract = document.querySelector('#button-subtract');
-const buttonMultiply = document.querySelector('#button-multiply');
-const buttonDivide = document.querySelector('#button-divide');
-
-const calculatorFrame = document.querySelector('#calculator-frame');
+const lcdText = document.querySelector('.lcd');
+const numpad = document.querySelector('.numpad');
+const calculatorFrame = document.querySelector('.calculator');
 
 const MAX_CHARACTER_LENGTH = 8;
 const MULTIPLE = 100000000;
@@ -36,53 +16,118 @@ let newLine = false;
 let isDecimalAdded = false;
 let dividedByZero = false;
 
-//used in case the user keeps pressing the = button and then presses an operator button.
+
 //when pressing an operator button, operate() is called.
 //We don't want to call operate() if the result has already been evaluated with = button.
+//used in case the user keeps pressing the = button and then presses an operator button.
 let hasEvaluatedResult = false;
 
-//-----NUMERICAL BUTTONS------------------//
-buttonDecimal.addEventListener('click', addDecimal);
-buttonZero.addEventListener('click',()=>{
-        renderInput('0');
-        setSecondOperand();
-});
-buttonOne.addEventListener('click',()=>{
-    renderInput('1');
-    setSecondOperand();
-});
-buttonTwo.addEventListener('click',()=>{
-    renderInput('2');
-    setSecondOperand();
-});
-buttonThree.addEventListener('click',()=>{
-    renderInput('3');
-    setSecondOperand();
-});
-buttonFour.addEventListener('click',()=>{
-    renderInput('4');
-    setSecondOperand();
-});
-buttonFive.addEventListener('click',()=>{
-    renderInput('5');
-    setSecondOperand();
-});
-buttonSix.addEventListener('click',()=>{
-    renderInput('6');
-    setSecondOperand();
-});
-buttonSeven.addEventListener('click',()=>{
-    renderInput('7');
-    setSecondOperand();
-});
-buttonEight.addEventListener('click',()=>{
-    renderInput('8');
-    setSecondOperand();
-});
-buttonNine.addEventListener('click',()=>{
-    renderInput('9');
-    setSecondOperand();
-});
+const buttonLayout = [7,4,1,0,8,5,2,'decimal',9,6,3,'equals','multiply','subtract','add'];
+
+for(let i = 0; i < 2; i++) {
+    let newRow = document.createElement('div');
+    newRow.classList.add('container', 'row');
+
+    if(i === 0) {
+        for(let i = 0; i < 3; i++){
+            let newDiv = document.createElement('div');
+            newDiv.classList.add('container', 'digit');
+            switch (i) {
+                case 0: 
+                        newDiv.classList.add('long-horizontal');
+                        newDiv.textContent = 'CLEAR'
+                        newDiv.addEventListener('click', reset);
+                        break;
+                case 1: 
+                        newDiv.textContent = '◄'
+                        newDiv.addEventListener('click', backspace);
+                        break;
+                case 2: 
+                        newDiv.classList.add('shift-1', 'scale-1', 'operator');
+                        newDiv.textContent = '÷'
+                        newDiv.addEventListener('click', ()=>{
+                            pressOperatorButton('divide');
+                        });
+                        break;
+                default: console.log('fel');
+            }
+            newRow.appendChild(newDiv);
+        }
+    } else {
+    let buttonIndex = 0;
+    for(let i = 0; i < 4; i++){
+        
+        
+        const newColumn = document.createElement('div');
+        newColumn.classList.add('container', 'column');
+            for(let i = 0; i < 4; i++){
+                console.log(buttonLayout[buttonIndex]);
+                let newDiv = document.createElement('div');
+                newDiv.classList.add('container', 'digit');
+
+                if(buttonLayout[buttonIndex] === 'decimal') {
+                    newDiv.addEventListener('click', addDecimal);
+                    newDiv.textContent = '.';
+                    newColumn.appendChild(newDiv);
+                    buttonIndex ++;
+                    continue;
+                }
+
+                if(buttonLayout[buttonIndex] === 'equals') {
+                    newDiv.addEventListener('click', pressEqualButton);
+                    newDiv.textContent = '=';
+                    newColumn.appendChild(newDiv);
+                    buttonIndex ++;
+                    continue;
+                }
+
+                if(buttonLayout[buttonIndex] === 'multiply') {
+                    newDiv.classList.add('operator');
+                    newDiv.addEventListener('click', ()=>{
+                        pressOperatorButton('multiply')
+                    });
+                    newDiv.textContent = 'X';
+                    newColumn.appendChild(newDiv);
+                    buttonIndex ++;
+                    continue;
+                }
+                
+                if(buttonLayout[buttonIndex] === 'subtract') {
+                    newDiv.classList.add('operator');
+                    newDiv.addEventListener('click', ()=>{
+                        pressOperatorButton('subtract')
+                    });
+                    newDiv.textContent = '-';
+                    newColumn.appendChild(newDiv);
+                    buttonIndex ++;
+                    continue;
+                }
+
+                if(buttonLayout[buttonIndex] === 'add') {
+                    newDiv.classList.add('operator', 'long');
+                    newDiv.addEventListener('click', ()=>{
+                        pressOperatorButton('add')
+                    });
+                    newDiv.textContent = '+';
+                    newColumn.appendChild(newDiv);
+                    buttonIndex ++;
+                    break;
+                }
+
+                newDiv.textContent = buttonLayout[buttonIndex];
+                const input = buttonLayout[buttonIndex];
+                newDiv.addEventListener('click',()=>{
+                    renderInput(input);
+                    setSecondOperand();
+                });
+                buttonIndex ++;
+                newColumn.appendChild(newDiv);
+            }
+            newRow.appendChild(newColumn);
+    }   
+}
+    numpad.appendChild(newRow);
+}
 
 document.addEventListener('keydown',(e)=>{
     if (!isNaN(Number(e.key))) {
@@ -98,25 +143,6 @@ document.addEventListener('keydown',(e)=>{
     if(e.key === 'Escape') reset();
     if(e.key === 'Enter' || e.key === '=') pressEqualButton();
 })
-
-//-----DELETE BUTTONS--------------------//
-buttonClear.addEventListener('click', reset);
-buttonDelete.addEventListener('click', backspace);
-
-//-----OPERATOR BUTTONS------------------//
-buttonAdd.addEventListener('click', ()=>{
-    pressOperatorButton('add')
-});
-buttonSubtract.addEventListener('click', ()=>{
-    pressOperatorButton('subtract');
-});
-buttonMultiply.addEventListener('click', ()=>{
-    pressOperatorButton('multiply');
-});
-buttonDivide.addEventListener('click', ()=>{
-    pressOperatorButton('divide');
-});
-buttonEquals.addEventListener('click', pressEqualButton);
 
 //-------FUNCTIONS-----------------------//
 function operate(){
@@ -211,6 +237,7 @@ function pressEqualButton(){
     hasEvaluatedResult = true;
 }
 function renderInput(input){
+    console.log(input);
     flashLCD();
     if(newLine || lcdText.textContent == '0' || dividedByZero) clearInput();
     if(lcdText.textContent.length < MAX_CHARACTER_LENGTH ) lcdText.textContent += input;
