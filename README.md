@@ -21,8 +21,6 @@ After having settled for the design, it was pretty apparent to me how the calcul
 
 Therefore I chose not to add some of the functionalities that other student's have in their calculators. For example when typing "2+2=" the display will not show "2+2=4". It will instead show one thing at a time, with a little "flash" of the digits when pressing buttons as a form of visual feedback.
 
-The buttons are tilted a tiny bit in random directions to make them look a bit loose. When hovering they tilt a bit as well to better sell the effect. 
-
 For the etch-a-sketch project I used a lot of CSS to style the components. I figured I would use SVG's to create the design for this project. As I learned, SVGs are not that good for complex shapes and I had to settle with a .png for the calculator instead, which was a bit of a disappointment, because that meant that I could have just photoshopped the reference image instead of recreating the whole thing with vector graphics. (All graphics on the page was created by me)
 
 In that regard, the etch-a-sketch project was more useful for learning CSS and how to place things properly. With this design, it was more practice with vector graphics. 
@@ -36,7 +34,13 @@ In that regard, the etch-a-sketch project was more useful for learning CSS and h
  - **Problem** 
  It was hard to anticipate, and to test for all the different possible combination of keystrokes. If I fixed something, it broke something else. 
  - **Solution** 
- Again, the flow chart helped me structure the code. Having some visual representation of the code was very useful in wrapping my head around the issues I faced.
+ Again, the flow chart helped me structure the code. Having some visual representation of the code was very useful in wrapping my head around the issues I faced. I still have some bugs in the code, though. I figured it is better to move on than to spend even more time on this project for now.
+ - **Problem** 
+ I initially created all the buttons manually. Then I wanted to create the automatically with loops since the code was repetetive.
+ - **Solution** 
+ I created loops within loops to and switch statements in order to create all the buttons and to check for different "special" keys, so 
+ I could assign the correct behaviour to them. This turned out to be a bad solution because the code became messy. I realized a better way
+ to approach this was to keep the "special" buttons being created manually and only automatically create the numerical buttons, since they all shared the same functionality. I could simplify the loops and remove the complex switch statements.
 
 ## Takeaways
 
