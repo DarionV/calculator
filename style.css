@@ -116,18 +116,6 @@ body{
 .operator{
     filter: hue-rotate(310deg);
 }
-.rot-2{
-    rotate: 2deg;
-}
-.rot-1{
-    rotate: -1deg;
-}
-.shift-1{
-    translate: 0px 1px;
-}
-.scale-1{
-    scale: 98%;;
-}
 .invert{
     filter: invert();
 }
