@@ -220,11 +220,6 @@ function zeroInput(){
     lcdText.textContent = '0';
 }
 
-function welcome(){
-    lcdText.textContent = 'welcome!';
-    newLine = true;
-}
-
 function resetMemory(){
     firstOperand = 0;
     secondOperand = 0;
@@ -250,4 +245,4 @@ function shake(){
 }
 
 addButtons();
-welcome();
+clear();
